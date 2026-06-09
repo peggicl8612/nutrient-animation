@@ -1,5 +1,6 @@
 import type { ManualNutritionInput } from '../../types/ui';
 import { estimateCalories } from '../../utils/nutritionCalc';
+import { parseIntInput } from '../../utils/numericInput';
 
 interface Props {
   values: ManualNutritionInput;
@@ -36,12 +37,11 @@ function NumberField({
       <span className="manual-field-label">{label}</span>
       <div className="manual-field-input-wrap">
         <input
-          type="number"
-          min={0}
-          step={1}
+          type="text"
+          inputMode="numeric"
           disabled={disabled}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value) || 0)}
+          value={String(value)}
+          onChange={(e) => onChange(parseIntInput(e.target.value))}
         />
         <span className="manual-field-unit">{unit}</span>
       </div>
@@ -84,24 +84,24 @@ export function ManualInputForm({ values, disabled, onChange }: Props) {
             <span className="manual-table-nutrient">{label}</span>
             <div className="manual-field-input-wrap">
               <input
-                type="number"
-                min={0}
+                type="text"
+                inputMode="numeric"
                 disabled={disabled}
-                value={values[intakeKey] as number}
+                value={String(values[intakeKey] as number)}
                 onChange={(e) =>
-                  update({ [intakeKey]: Number(e.target.value) || 0 } as Partial<ManualNutritionInput>)
+                  update({ [intakeKey]: parseIntInput(e.target.value) } as Partial<ManualNutritionInput>)
                 }
               />
               <span className="manual-field-unit">g</span>
             </div>
             <div className="manual-field-input-wrap">
               <input
-                type="number"
-                min={0}
+                type="text"
+                inputMode="numeric"
                 disabled={disabled}
-                value={values[targetKey] as number}
+                value={String(values[targetKey] as number)}
                 onChange={(e) =>
-                  update({ [targetKey]: Number(e.target.value) || 0 } as Partial<ManualNutritionInput>)
+                  update({ [targetKey]: parseIntInput(e.target.value) } as Partial<ManualNutritionInput>)
                 }
               />
               <span className="manual-field-unit">g</span>
@@ -124,13 +124,6 @@ export function ManualInputForm({ values, disabled, onChange }: Props) {
           value={values.sodiumIntake}
           disabled={disabled}
           onChange={(v) => update({ sodiumIntake: v })}
-        />
-        <NumberField
-          label="每日熱量目標"
-          unit="kcal"
-          value={values.caloriesTarget}
-          disabled={disabled}
-          onChange={(v) => update({ caloriesTarget: v })}
         />
       </div>
 

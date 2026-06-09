@@ -39,17 +39,31 @@ const SCENARIOS: Record<string, Omit<NutritionData, 'updatedAt' | 'source'>> = {
   },
 };
 
-export function pickScenarioFromFile(file: File): NutritionData {
-  const name = file.name.toLowerCase();
-  let key = 'default';
-  if (name.includes('salad') || name.includes('蔬菜') || name.includes('沙拉')) key = 'salad';
-  else if (name.includes('cake') || name.includes('dessert') || name.includes('甜')) key = 'dessert';
-  else if (name.includes('bento') || name.includes('便當')) key = 'bento';
+function resolveScenarioKey(hints: string): keyof typeof SCENARIOS {
+  const name = hints.toLowerCase();
+  if (name.includes('salad') || name.includes('蔬菜') || name.includes('沙拉')) return 'salad';
+  if (name.includes('cake') || name.includes('dessert') || name.includes('甜') || name.includes('蛋糕')) return 'dessert';
+  if (name.includes('bento') || name.includes('便當')) return 'bento';
+  return 'default';
+}
 
+export function pickScenarioFromHints(hints: {
+  fileName?: string;
+  mealName?: string;
+}): NutritionData {
+  const combined = [hints.fileName, hints.mealName].filter(Boolean).join(' ');
+  const key = resolveScenarioKey(combined);
   const scenario = SCENARIOS[key] ?? SCENARIOS.default;
+  const customMealName = hints.mealName?.trim();
+
   return {
     ...scenario,
+    mealName: customMealName || scenario.mealName,
     updatedAt: new Date().toISOString(),
     source: 'ai-mock',
   };
+}
+
+export function pickScenarioFromFile(file: File, mealName?: string): NutritionData {
+  return pickScenarioFromHints({ fileName: file.name, mealName });
 }

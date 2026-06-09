@@ -2,8 +2,9 @@ import { useNutritionStore } from '../../stores/useNutritionStore';
 import type { IslandCardData } from './IslandCard.tsx';
 import { HeroSection } from '../sections/HeroSection.tsx';
 import { AnalyzeSection } from '../sections/AnalyzeSection.tsx';
-import { IslandScrollSection } from '../sections/IslandScrollSection.tsx';
-import { FooterSection } from '../sections/FooterSection.tsx';
+import { TarotSection } from '../sections/TarotSection.tsx';
+import { PlanetGridSection } from '../sections/PlanetGridSection.tsx';
+import { Footer } from './Footer.tsx';
 
 export function PageContent() {
   const data = useNutritionStore((s) => s.data);
@@ -11,7 +12,7 @@ export function PageContent() {
   const islands: IslandCardData[] = [
     {
       id: 'protein',
-      index: '02',
+      index: '03',
       title: '蛋白質群峰',
       subtitle: 'Protein Peaks',
       description: '肌肉修復與代謝的基石。攝取進度會影響冰晶星球的結構密度與光澤。',
@@ -39,7 +40,7 @@ export function PageContent() {
     },
     {
       id: 'oasis',
-      index: '04',
+      index: '03',
       title: '纖維綠洲',
       subtitle: 'Vitality Oasis',
       description: '腸道活力的象徵。纖維攝取越充足，星球大氣層越明亮、生態紋理越豐富。',
@@ -57,14 +58,9 @@ export function PageContent() {
     <main className="scroll-page">
       <HeroSection />
       <AnalyzeSection />
-      {islands.map((island) => (
-        <IslandScrollSection
-          key={island.id}
-          data={island}
-          sectionIndex={island.index}
-        />
-      ))}
-      <FooterSection />
+      <TarotSection />
+      <PlanetGridSection islands={islands} />
+      <Footer />
     </main>
   );
 }

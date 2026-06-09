@@ -26,8 +26,11 @@ export class MockNutritionProvider implements INutritionProvider {
       return buildFromManual(options.manual);
     }
 
-    if (options.file) {
-      return pickScenarioFromFile(options.file);
+    if (options.file || options.mealName) {
+      return pickScenarioFromFile(
+        options.file ?? new File([''], options.mealName ?? 'default.jpg'),
+        options.mealName
+      );
     }
 
     return pickScenarioFromFile(new File([''], 'default.jpg'));

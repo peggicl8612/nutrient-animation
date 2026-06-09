@@ -374,6 +374,220 @@
   gap: 0.5rem;
 }
 
+/* ── 塔羅區塊 ── */
+.section-tarot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 6vw, 5rem);
+}
+
+.section-tarot-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.section-tarot-mist {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(180, 195, 220, 0.35), transparent 70%);
+}
+
+.section-tarot-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+}
+
+.section-header-center {
+  text-align: center;
+}
+
+.section-header-center .section-desc {
+  margin: 0 auto;
+}
+
+.tarot-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.tarot-card-flip {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.tarot-card-face {
+  position: relative;
+  width: clamp(200px, 42vw, 260px);
+  aspect-ratio: 5 / 7;
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(235, 240, 248, 0.88) 100%);
+  box-shadow: 0 20px 60px rgba(100, 120, 160, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: #5a6278;
+}
+
+.tarot-card-border {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(90, 98, 120, 0.2);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.tarot-art-svg {
+  width: 70%;
+  height: auto;
+}
+
+.tarot-card-name {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: #4a5068;
+}
+
+.tarot-card-placeholder {
+  width: clamp(200px, 42vw, 260px);
+  aspect-ratio: 5 / 7;
+  border-radius: 14px;
+  border: 1px dashed rgba(90, 98, 120, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9a9a9a;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.tarot-reading {
+  max-width: 28rem;
+  text-align: center;
+}
+
+.tarot-reading-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.75rem;
+}
+
+.tarot-reading-text {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #6b6b6b;
+}
+
+/* ── 星球 Grid（桌機三欄 / 手機垂直）── */
+.section-planet-grid {
+  display: none;
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 6vw, 5rem);
+  min-height: 100vh;
+}
+
+.section-planet-grid-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.planet-grid-header {
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.planet-grid-desktop {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  align-items: start;
+}
+
+.planet-grid-mobile {
+  display: block;
+}
+
+.island-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 32px rgba(100, 140, 180, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.island-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(100, 140, 180, 0.14);
+}
+
+.island-card-visual .mini-planet-canvas {
+  width: clamp(100px, 12vw, 140px);
+  height: clamp(100px, 12vw, 140px);
+}
+
+.island-card-content {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.island-card-index {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #9a9a9a;
+}
+
+.island-card-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  font-weight: 500;
+  color: #444;
+}
+
+.island-card-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+}
+
+.island-card-description {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #6b6b6b;
+  margin-top: 0.25rem;
+}
+
+.island-card .island-card-metric {
+  justify-content: center;
+  width: 100%;
+}
+
 /* ── Footer ── */
 .section-footer {
   min-height: 40vh;
@@ -382,6 +596,38 @@
   justify-content: center;
   padding: 3rem 1.5rem 5rem;
   border-top: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+.section-footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.store-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.store-badge {
+  display: block;
+  opacity: 0.55;
+  transition: opacity 0.3s ease, transform 0.25s ease;
+}
+
+.store-badge:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.store-badge-svg {
+  display: block;
+  width: 36px;
+  height: 36px;
 }
 
 .section-footer-text {
@@ -400,6 +646,18 @@
 }
 
 /* ── 響應式 ── */
+@media (min-width: 721px) {
+  .section-planet-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .planet-grid-mobile {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
   .section-island-inner {
     grid-template-columns: 1fr;

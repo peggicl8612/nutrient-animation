@@ -10,7 +10,9 @@ export function AnalyzeLoading() {
     <div className="analyze-loading">
       <p className="analyze-loading-label">AI 辨識中…</p>
       <div className="analyze-loading-bar">
-        <div className="analyze-loading-fill" style={{ width: `${progress}%` }} />
+        <div className="analyze-loading-fill-wrap" style={{ width: `${progress}%` }}>
+          <div className="analyze-loading-fill" />
+        </div>
       </div>
       <span className="analyze-loading-percent">{progress}%</span>
     </div>
