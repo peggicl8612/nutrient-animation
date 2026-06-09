@@ -1,4 +1,7 @@
+import type { CSSProperties } from 'react';
 import { useNutritionStore } from '../../stores/useNutritionStore';
+import { useUIStore } from '../../stores/useUIStore';
+import { MEAL_COLORS } from '../../types/ui';
 import { macroPercentages } from '../../utils/nutritionCalc';
 import { AnimatedNumber } from '../ui/AnimatedNumber.tsx';
 
@@ -40,17 +43,28 @@ function MacroBar({
 
 export function NutritionFactsCard() {
   const data = useNutritionStore((s) => s.data);
+  const selectedMeal = useUIStore((s) => s.selectedMeal);
+  const mealToken = MEAL_COLORS[selectedMeal];
   const macros = macroPercentages(data);
   const caloriePct = data.calories.target > 0
     ? Math.min(100, (data.calories.intake / data.calories.target) * 100)
     : 0;
+  const displayMealName = data.source === 'initial' ? '待分析' : data.mealName;
 
   return (
-    <div className="nutrition-facts">
+    <div
+      className="nutrition-facts"
+      style={
+        {
+          '--meal-color': mealToken.primary,
+          '--meal-glow': mealToken.glow,
+        } as CSSProperties
+      }
+    >
       <div className="nutrition-facts-header">
         <div>
           <p className="nutrition-facts-eyebrow">Nutrition Facts</p>
-          <h3 className="nutrition-facts-meal">{data.mealName}</h3>
+          <h3 className="nutrition-facts-meal">{displayMealName}</h3>
         </div>
         <div className="nutrition-facts-calories">
           <AnimatedNumber
@@ -106,6 +120,19 @@ export function NutritionFactsCard() {
           <span><i className="dist-dot dist-carbs" />碳水 {macros.carbs}%</span>
           <span><i className="dist-dot dist-fat" />脂質 {macros.fat}%</span>
         </div>
+      </div>
+
+      <div className="nutrition-facts-meal-result">
+        <span className="nutrition-facts-meal-label">餐別</span>
+        <span
+          className="nutrition-facts-meal-badge"
+          style={{
+            backgroundColor: mealToken.primary,
+            boxShadow: `0 0 14px ${mealToken.glow}`,
+          }}
+        >
+          {mealToken.label}
+        </span>
       </div>
     </div>
   );
