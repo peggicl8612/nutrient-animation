@@ -1,0 +1,430 @@
+/* ── 一頁式捲動容器 ── */
+.scroll-page {
+  position: relative;
+  width: 100%;
+}
+
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── 共用區塊標題 ── */
+.section-index {
+  display: block;
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: #9a9a9a;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #444;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  max-width: 32rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #6b6b6b;
+}
+
+.section-header {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+/* ── Hero + 光影過渡（單一捲動區）── */
+.section-hero-scroll {
+  height: 200vh;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 5vh, 3.5rem);
+  padding: clamp(2rem, 6vw, 4rem);
+}
+
+.hero-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-planets-stage {
+  position: relative;
+  z-index: 2;
+  transform-origin: center center;
+}
+
+/* 三顆發光星球 */
+.hero-planets {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 2.5rem);
+}
+
+.hero-planet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hero-planet .mini-planet-canvas {
+  width: clamp(100px, 16vw, 160px);
+  height: clamp(100px, 16vw, 160px);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-planet-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 120%;
+  transform: translate(-50%, -55%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-planet-ice .hero-planet-glow {
+  background: radial-gradient(circle, rgba(115, 158, 225, 0.45) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(100, 160, 255, 0.2);
+}
+
+.hero-planet-gas .hero-planet-glow {
+  background: radial-gradient(circle, rgba(255, 160, 90, 0.5) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(255, 160, 90, 0.2);
+}
+
+.hero-planet-terran .hero-planet-glow {
+  background: radial-gradient(circle, rgba(160, 140, 255, 0.5) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(160, 140, 255, 0.15);
+}
+
+.hero-planet-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: #9a9a9a;
+  text-transform: uppercase;
+}
+
+.hero-copy-anchor {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-copy {
+  text-align: center;
+  max-width: 36rem;
+  padding: 0 1.5rem;
+}
+
+.hero-transition-label {
+  position: absolute;
+  bottom: clamp(2.5rem, 10vh, 5rem);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  text-align: center;
+  padding: 0 1.5rem;
+  pointer-events: none;
+}
+
+.hero-transition-index {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: rgba(120, 110, 90, 0.75);
+}
+
+.hero-transition-text {
+  margin-top: 0.5rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+  line-height: 1.5;
+  color: rgba(70, 65, 58, 0.9);
+  letter-spacing: 0.04em;
+}
+
+.section-hero-scroll .hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  margin-bottom: 1.5rem;
+}
+
+.section-hero-scroll .hero-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+  color: #444;
+}
+
+.section-hero-scroll .hero-lead {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.75;
+  color: #6b6b6b;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  animation: scroll-hint-bob 2.5s ease-in-out infinite;
+}
+
+@keyframes scroll-hint-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+  50% { transform: translateX(-50%) translateY(6px); opacity: 0.8; }
+}
+
+.light-beam-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.light-beam {
+  width: 80vw;
+  height: 120vh;
+  transform-origin: top center;
+}
+
+.light-beam-core {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 252, 240, 0.6) 35%,
+    rgba(255, 250, 235, 0.15) 70%,
+    transparent 100%
+  );
+  clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+}
+
+.light-beam-halo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 230, 0.4) 0%,
+    rgba(255, 245, 220, 0.12) 50%,
+    transparent 100%
+  );
+  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+  filter: blur(20px);
+}
+
+.light-planets-wrap {
+  position: relative;
+  z-index: 1;
+  transform-origin: center center;
+}
+
+/* ── 分析區塊 ── */
+.section-analyze {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 6vw, 5rem);
+  min-height: 100vh;
+}
+
+.section-analyze-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 245, 0.95) 0%,
+    rgba(250, 250, 247, 0.98) 50%,
+    #fafaf7 100%
+  );
+  pointer-events: none;
+}
+
+.section-analyze-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1080px;
+}
+
+.analyze-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+
+.analyze-panel {
+  padding: clamp(1.5rem, 4vw, 2rem);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 40px rgba(100, 140, 180, 0.1);
+}
+
+.analyze-panel-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.analyze-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── 島嶼區塊 ── */
+.section-island {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(4rem, 12vh, 8rem) clamp(1.5rem, 6vw, 5rem);
+}
+
+.section-island-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.section-island-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(160px, 240px) 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+}
+
+.section-island-visual .mini-planet-canvas {
+  width: clamp(160px, 22vw, 240px);
+  height: clamp(160px, 22vw, 240px);
+}
+
+.section-island-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ── Footer ── */
+.section-footer {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem 5rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+.section-footer-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #9a9a9a;
+  text-align: center;
+}
+
+.section-footer-credit {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #bbb;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+/* ── 響應式 ── */
+@media (max-width: 720px) {
+  .section-island-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .section-island-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .section-desc {
+    margin: 0 auto;
+  }
+
+  .hero-planets {
+    gap: 0.75rem;
+  }
+
+  .hero-planet .mini-planet-canvas {
+    width: clamp(80px, 22vw, 110px);
+    height: clamp(80px, 22vw, 110px);
+  }
+
+  .analyze-grid {
+    grid-template-columns: 1fr;
+  }
+}

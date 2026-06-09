@@ -1,0 +1,69 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fafaf7;
+  color: #575757;
+  font-family: 'Zen Old Mincho', serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── 迷你星球 Canvas 共用 ── */
+.mini-planet-canvas {
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.7), transparent 70%);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+}
+
+.mini-planet-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── 島嶼數據指標 ── */
+.island-card-metric {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.island-card-metric-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  width: 100%;
+}
+
+.island-card-metric-value {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.island-card-metric-detail {
+  font-size: 0.875rem;
+  color: #6b6b6b;
+}

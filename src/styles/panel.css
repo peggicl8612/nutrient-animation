@@ -1,0 +1,514 @@
+/* ── 分析面板表單（內嵌於 AnalyzeSection）── */
+
+.panel-tab {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.panel-tab-active {
+  background: rgba(255, 255, 255, 0.85);
+  color: #333;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.panel-tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control-panel-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #5a6a8a 0%, #3d4a66 100%);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.control-panel-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.control-panel-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── 圖片上傳區 ── */
+.upload-zone-input {
+  display: none;
+}
+
+.upload-zone-placeholder {
+  width: 100%;
+  min-height: 160px;
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-zone-placeholder small {
+  font-size: 0.7rem;
+  color: #9a9a9a;
+  text-align: center;
+  padding: 0 1rem;
+  line-height: 1.4;
+}
+
+.upload-zone-placeholder:hover:not(:disabled) {
+  border-color: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.upload-zone-placeholder:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upload-zone-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.upload-zone-preview img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.upload-zone-clear {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ── 手動輸入表單 ── */
+.manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.manual-meal-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.manual-meal-name span {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.manual-meal-name input {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+  color: #333;
+  font-family: 'Zen Old Mincho', serif;
+}
+
+.manual-table {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.manual-table-head,
+.manual-table-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+}
+
+.manual-table-head {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.manual-table-head-nutrient {
+  text-align: left;
+}
+
+.manual-table-row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.manual-table-row:last-child {
+  border-bottom: none;
+}
+
+.manual-table-nutrient {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.manual-field-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.manual-field-input-wrap input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  color: #333;
+  font-family: ui-monospace, 'SF Mono', monospace;
+}
+
+.manual-field-unit {
+  font-size: 0.7rem;
+  color: #9a9a9a;
+  flex-shrink: 0;
+}
+
+.manual-extra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.manual-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.manual-field-label {
+  font-size: 0.7rem;
+  color: #777;
+}
+
+.manual-kcal-estimate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(90, 106, 138, 0.08);
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.manual-kcal-estimate strong {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 1.1rem;
+  color: #3d4a66;
+}
+
+.manual-kcal-estimate small {
+  width: 100%;
+  font-size: 0.65rem;
+  color: #9a9a9a;
+}
+
+.manual-field input:disabled,
+.manual-field-input-wrap input:disabled,
+.manual-meal-name input:disabled {
+  opacity: 0.5;
+}
+
+/* ── 營養成分卡 ── */
+.nutrition-facts {
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 40px rgba(100, 140, 180, 0.08);
+}
+
+.nutrition-facts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.nutrition-facts-eyebrow {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  margin-bottom: 0.25rem;
+}
+
+.nutrition-facts-meal {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.nutrition-facts-calories {
+  text-align: right;
+}
+
+.nutrition-facts-kcal {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #3d4a66;
+  line-height: 1;
+}
+
+.nutrition-facts-kcal-unit {
+  font-size: 0.75rem;
+  color: #888;
+  margin-left: 0.15rem;
+}
+
+.nutrition-facts-kcal-target {
+  display: block;
+  font-size: 0.7rem;
+  color: #9a9a9a;
+  margin-top: 0.25rem;
+}
+
+.nutrition-facts-calorie-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+
+.nutrition-facts-calorie-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #5a6a8a, #7a8ab0);
+  transition: width 0.6s ease;
+}
+
+.nutrition-facts-macros {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.facts-macro-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0.25rem 0.75rem;
+  align-items: center;
+}
+
+.facts-macro-head {
+  grid-column: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.facts-macro-values {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.facts-macro-bar {
+  grid-column: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.facts-macro-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.facts-macro-pct {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.7rem;
+  color: #9a9a9a;
+}
+
+.nutrition-facts-secondary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+}
+
+.facts-secondary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  color: #9a9a9a;
+}
+
+.facts-secondary-item span:last-child,
+.facts-secondary-item > span + span {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.nutrition-facts-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nutrition-facts-dist-label {
+  font-size: 0.7rem;
+  color: #9a9a9a;
+  letter-spacing: 0.06em;
+}
+
+.nutrition-facts-dist-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.dist-segment {
+  height: 100%;
+  transition: width 0.6s ease;
+}
+
+.dist-protein { background: #6a9fd4; }
+.dist-carbs { background: #e8a060; }
+.dist-fat { background: #c4a8e8; }
+
+.nutrition-facts-dist-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.dist-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+@media (max-width: 720px) {
+  .manual-extra-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nutrition-facts-secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .nutrition-facts-header {
+    flex-direction: column;
+  }
+
+  .nutrition-facts-calories {
+    text-align: left;
+  }
+}
+
+/* ── 分析 Loading ── */
+.analyze-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.analyze-loading-label {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.75rem;
+  color: #5a6a8a;
+  letter-spacing: 0.06em;
+}
+
+.analyze-loading-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.analyze-loading-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #7a8ab0, #5a6a8a);
+  transition: width 0.1s linear;
+}
+
+.analyze-loading-percent {
+  font-family: ui-monospace, 'SF Mono', monospace;
+  font-size: 0.7rem;
+  color: #9a9a9a;
+  align-self: flex-end;
+}
