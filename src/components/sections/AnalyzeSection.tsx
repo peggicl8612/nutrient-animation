@@ -1,4 +1,5 @@
 import { useRef, useState, type CSSProperties } from 'react';
+import { isFirebaseConfigured } from '../../firebaseConfig';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import { useUIStore } from '../../stores/useUIStore';
@@ -38,7 +39,9 @@ export function AnalyzeSection() {
 
   const { errorMessage, uploadAndAnalyze, setErrorMessage } = useNutrientAI();
 
-  const [mode, setMode] = useState<'image' | 'manual'>('image');
+  const [mode, setMode] = useState<'image' | 'manual'>(
+    isFirebaseConfigured ? 'image' : 'manual'
+  );
   const [manualInput, setManualInput] = useState<ManualNutritionInput>(DEFAULT_MANUAL_INPUT);
   const [hasImage, setHasImage] = useState(false);
   const selectedFileRef = useRef<File | null>(null);
@@ -120,7 +123,8 @@ export function AnalyzeSection() {
               <button
                 type="button"
                 className={mode === 'image' ? 'panel-tab panel-tab-active' : 'panel-tab'}
-                disabled={isAnalyzing}
+                disabled={isAnalyzing || !isFirebaseConfigured}
+                title={isFirebaseConfigured ? undefined : '線上版尚未設定 Firebase'}
                 onClick={() => setMode('image')}
               >
                 圖片上傳
@@ -160,6 +164,13 @@ export function AnalyzeSection() {
               )}
 
               <AnalyzeLoading />
+
+              {!isFirebaseConfigured && (
+                <p className="analyze-hint">
+                  線上展示版未設定 Firebase，請使用「手動輸入」；若要啟用 AI 影像分析，請在 GitHub
+                  Repository Secrets 設定 VITE_FIREBASE_* 環境變數後重新部署。
+                </p>
+              )}
 
               {errorMessage && (
                 <p className="analyze-error" role="alert">{errorMessage}</p>

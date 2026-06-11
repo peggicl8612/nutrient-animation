@@ -683,6 +683,15 @@
   align-self: flex-end;
 }
 
+.analyze-hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.55;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(90, 106, 138, 0.08);
+}
+
 .analyze-error {
   font-size: 0.8rem;
   color: #b54a4a;

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { collection, addDoc, doc, onSnapshot } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes } from 'firebase/storage';
-import { db, storage, storageBucket } from '../firebaseConfig';
+import { db, isFirebaseConfigured, storage, storageBucket } from '../firebaseConfig';
 
 const ANALYSIS_TIMEOUT_MS = 60_000;
 
@@ -79,6 +79,13 @@ export function useNutrientAI() {
 
         void (async () => {
           try {
+            if (!isFirebaseConfigured || !db || !storage || !storageBucket) {
+              const msg = 'AI 影像分析尚未設定，請改用手動輸入模式';
+              setErrorMessage(msg);
+              finish(() => reject(new Error(msg)));
+              return;
+            }
+
             const fileExtension = file.name.split('.').pop() ?? 'jpg';
             const storagePath = `foods/${Date.now()}.${fileExtension}`;
             const imageRef = storageRef(storage, storagePath);
