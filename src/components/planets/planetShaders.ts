@@ -53,7 +53,7 @@ export const ringFragmentShader = /* glsl */ `
                     * smoothstep(uGapCenter + uGapWidth * 0.3, uGapCenter - uGapWidth * 0.3, t);
 
     float alpha = innerFade * outerFade * band * gap * uOpacity;
-    vec3 col = uColor * mix(0.7, 1.15, band * innerFade);
+    vec3 col = uColor * mix(0.48, 0.72, band * innerFade);
     gl_FragColor = vec4(col, alpha);
   }
 `;
@@ -80,12 +80,12 @@ export const atmosphereFragmentShader = /* glsl */ `
 
 const surfaceLighting = /* glsl */ `
   vec3 applyLighting(vec3 col, vec3 n, vec3 lightDir, vec3 viewDir, float specPower, float specStr) {
-    float diff = max(dot(n, lightDir), 0.08;
+    float diff = max(dot(n, lightDir), 0.9);
     vec3 halfDir = normalize(lightDir + viewDir);
     float spec = pow(max(dot(n, halfDir), 0.0), specPower);
-    vec3 ambient = col * 0.14;
-    vec3 diffuse = col * diff * 0.86;
-    vec3 specular = vec3(1.0) * spec * specStr;
+    vec3 ambient = col * 0.22;
+    vec3 diffuse = col * diff * 0.58;
+    vec3 specular = vec3(1.0) * spec * specStr * 0.6;
     return ambient + diffuse + specular;
   }
 
@@ -105,11 +105,6 @@ export const icePlanetFragmentShader = /* glsl */ `
   varying vec3 vNormal;
   varying vec3 vWorldPos;
   varying vec3 vViewDir;
-
-// 計算視線與法線夾角
-float fresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 3.0);
-vec3 atmosColor = vec3(0.3, 0.6, 1.0); // 大氣層顏色
-col += atmosColor * fresnel * 0.5; // 疊加到主顏色上
 
   float hash(vec3 p) {
     return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453);
@@ -135,12 +130,16 @@ col += atmosColor * fresnel * 0.5; // 疊加到主顏色上
     float n2 = noise(vec2(lat * 4.0, uTime * 0.05));
     float bands = sin(lat * 5.0 + uTime * 0.12 + n2 * 2.0) * 0.5 + 0.5;
 
-    vec3 abyss = vec3(0.03, 0.08, 0.22);
-    vec3 ice = vec3(0.28, 0.52, 0.82);
-    vec3 frost = vec3(0.72, 0.86, 0.98);
-    vec3 col = mix(abyss, ice, bands);
-    col = mix(col, frost, hash(floor(vWorldPos * 8.0)) * (0.18 + uMetric * 0.28));
-    col += vec3(0.08, 0.18, 0.38) * uHover * 0.3;
+    vec3 shadow = vec3(0.58, 0.72, 0.84);
+    vec3 mid = vec3(0.74, 0.86, 0.93);
+    vec3 light = vec3(0.88, 0.94, 0.98);
+    vec3 col = mix(shadow, mid, bands);
+    col = mix(col, light, hash(floor(vWorldPos * 8.0)) * (0.12 + uMetric * 0.18));
+    col += vec3(0.06, 0.12, 0.22) * uHover * 0.2;
+
+    float fresnel = pow(1.0 - max(dot(n, viewDir), 0.0), 3.0);
+    vec3 atmosColor = vec3(0.62, 0.82, 0.96);
+    col += atmosColor * fresnel * 0.22;
 
     col = applyLighting(col, n, normalize(uLightDir), viewDir, 56.0, 0.22);
     col = desaturate(col, uDesaturate);
@@ -183,13 +182,13 @@ export const gasPlanetFragmentShader = /* glsl */ `
     float turb = fbm(vec2(lat * 2.5 + uTime * 0.08, uTime * 0.04));
     float bands = sin(lat * 7.0 + uTime * 0.18 + turb * 3.0) * 0.5 + 0.5;
 
-    vec3 core = vec3(0.38, 0.1, 0.03);
-    vec3 amber = vec3(0.88, 0.4, 0.1);
-    vec3 cream = vec3(0.95, 0.72, 0.48);
-    vec3 col = mix(core, amber, bands + turb * 0.25);
-    col = mix(col, cream, sin(lat * 16.0 + uTime * 0.5) * 0.06 + 0.1);
-    col *= 0.82 + uMetric * 0.3;
-    col += vec3(0.45, 0.18, 0.06) * uHover * 0.25;
+    vec3 shadow = vec3(0.92, 0.72, 0.60);
+    vec3 mid = vec3(0.98, 0.8, 0.78);
+    vec3 light = vec3(1.0, 0.92, 0.84);
+    vec3 col = mix(shadow, mid, bands + turb * 0.15);
+    col = mix(col, light, sin(lat * 16.0 + uTime * 0.5) * 0.04 + 0.08);
+    col *= 0.90 + uMetric * 0.12;
+    col += vec3(0.28, 0.14, 0.08) * uHover * 0.18;
 
     col = applyLighting(col, n, normalize(uLightDir), viewDir, 24.0, 0.08);
     col = desaturate(col, uDesaturate);
@@ -233,19 +232,20 @@ export const terranPlanetFragmentShader = /* glsl */ `
     float turb = fbm(vec2(lon * 1.8 + uTime * 0.06, lat * 3.0));
     float bands = sin(lat * 6.5 + uTime * 0.14 + turb * 4.0) * 0.5 + 0.5;
 
-    vec3 deep = vec3(0.04, 0.05, 0.18);
-    vec3 indigo = vec3(0.12, 0.14, 0.42);
-    vec3 violet = vec3(0.35, 0.22, 0.62);
-    vec3 periwinkle = vec3(0.45, 0.55, 0.92);
+   
+    vec3 shadow = vec3(0.60, 0.56, 0.88); 
+    vec3 mid = vec3(0.78, 0.72, 0.86);
+    vec3 light = vec3(0.84, 0.80, 0.94);
+    vec3 accent = vec3(0.8, 0.8, 0.92);
 
-    vec3 col = mix(deep, indigo, bands);
-    col = mix(col, violet, turb * (0.35 + uMetric * 0.4));
-    col = mix(col, periwinkle, pow(sin(lon * 4.0 + lat * 8.0 + uTime * 0.2) * 0.5 + 0.5, 3.0) * 0.2);
+    vec3 col = mix(shadow, mid, bands);
+    col = mix(col, accent, turb * (0.22 + uMetric * 0.25));
+    col = mix(col, light, pow(sin(lon * 4.0 + lat * 8.0 + uTime * 0.2) * 0.5 + 0.5, 3.0) * 0.14);
 
     float storm = smoothstep(0.55, 0.9, sin(lon * 2.5 + lat * 5.0 - uTime * 0.3) * 0.5 + 0.5);
-    col = mix(col, vec3(0.55, 0.45, 0.88), storm * 0.18);
+    col = mix(col, vec3(0.72, 0.66, 0.90), storm * 0.12);
 
-    col += vec3(0.2, 0.15, 0.45) * uHover * 0.28;
+    col += vec3(0.14, 0.10, 0.28) * uHover * 0.18;
     col = applyLighting(col, n, normalize(uLightDir), viewDir, 40.0, 0.16);
     col = desaturate(col, uDesaturate);
 

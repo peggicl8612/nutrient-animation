@@ -86,7 +86,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: clamp(1rem, 4vw, 2.5rem);
+  gap: 1px;
 }
 
 .hero-planet {
@@ -94,48 +94,87 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  cursor: pointer;
 }
 
-.hero-planet .mini-planet-canvas {
-  width: clamp(100px, 16vw, 160px);
-  height: clamp(100px, 16vw, 160px);
+.hero-planet-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.2, 1, 0.36, 1);
+}
+
+.hero-planet-visual-hover {
+  animation: hero-planet-float 2.6s ease-in-out infinite;
+}
+
+.hero-planet-visual-hover .hero-planet-glow,
+.island-card:hover .hero-planet-glow {
+  opacity: 0;
+  filter: blur(30px);
+}
+
+@keyframes hero-planet-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.hero-planet .mini-planet-canvas,
+.planet-visual .mini-planet-canvas {
+  width: clamp(112px, 18vw, 176px);
+  height: clamp(112px, 18vw, 176px);
   position: relative;
   z-index: 1;
 }
 
-.hero-planet-glow {
+.planet-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.hero-planet-glow,
+.planet-visual-glow {
   position: absolute;
-  top: 50%;
+  top: 75%;
   left: 50%;
-  width: 140%;
-  height: 120%;
+  width: 120%;
+  height: 130%;
   transform: translate(-50%, -55%);
   border-radius: 50%;
   z-index: 0;
   pointer-events: none;
+  transition: opacity 0.45s ease, filter 0.45s ease;
 }
 
-.hero-planet-ice .hero-planet-glow {
+/* Section 1 Hero 與卡片：共用外圍光暈 */
+.hero-planet-ice .hero-planet-glow,
+.planet-visual-ice .planet-visual-glow {
   background: radial-gradient(circle, rgba(115, 158, 225, 0.45) 0%, transparent 70%);
   box-shadow: 0 0 60px rgba(100, 160, 255, 0.2);
 }
 
-.hero-planet-gas .hero-planet-glow {
-  background: radial-gradient(circle, rgba(255, 160, 90, 0.5) 0%, transparent 70%);
+.hero-planet-gas .hero-planet-glow,
+.planet-visual-gas .planet-visual-glow {
+  background: radial-gradient(circle, rgba(255, 160, 90, 0.5) 10%, transparent 70%);
   box-shadow: 0 0 60px rgba(255, 160, 90, 0.2);
 }
 
-.hero-planet-terran .hero-planet-glow {
+.hero-planet-terran .hero-planet-glow,
+.planet-visual-terran .planet-visual-glow {
   background: radial-gradient(circle, rgba(160, 140, 255, 0.5) 0%, transparent 70%);
   box-shadow: 0 0 60px rgba(160, 140, 255, 0.15);
 }
 
 .hero-planet-label {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
   color: #9a9a9a;
   text-transform: uppercase;
+  margin-top: -0.8rem;
 }
 
 .hero-copy-anchor {
@@ -201,9 +240,9 @@
 }
 
 .section-hero-scroll .hero-lead {
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
   line-height: 1.75;
-  color: #6b6b6b;
+  color: #7f7d7d;
 }
 
 .scroll-hint {
@@ -363,9 +402,38 @@
   max-width: 960px;
 }
 
-.section-island-visual .mini-planet-canvas {
-  width: clamp(160px, 22vw, 240px);
-  height: clamp(160px, 22vw, 240px);
+.section-island-visual .planet-visual {
+  width: clamp(176px, 24vw, 260px);
+  height: clamp(176px, 24vw, 260px);
+}
+
+.section-island-visual .planet-visual .mini-planet-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.island-card-visual {
+  width: clamp(112px, 18vw, 176px);
+  height: clamp(112px, 18vw, 176px);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.island-card-visual .hero-planet-visual,
+.section-island-visual .hero-planet-visual {
+  width: auto;
+  height: 100%;
+  filter: brightness(1.2);
+}
+
+.island-card-visual .planet-visual {
+  width: 100%;
+  height: 100%;
+}
+
+.island-card-visual .planet-visual .mini-planet-canvas {
+  width: clamp(112px, 18vw, 176px);
+  height: clamp(112px, 18vw, 176px);
 }
 
 .section-island-content {
@@ -430,8 +498,14 @@
   width: clamp(200px, 42vw, 260px);
   aspect-ratio: 5 / 7;
   border-radius: 14px;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(235, 240, 248, 0.88) 100%);
-  box-shadow: 0 20px 60px rgba(100, 120, 160, 0.18);
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    color-mix(in srgb, var(--tarot-theme, #e8ecf4) 28%, white) 100%
+  );
+  box-shadow:
+    0 20px 60px color-mix(in srgb, var(--tarot-theme, #8898b8) 22%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--tarot-theme, #8898b8) 18%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -443,22 +517,47 @@
 .tarot-card-border {
   position: absolute;
   inset: 10px;
-  border: 1px solid rgba(90, 98, 120, 0.2);
+  border: 1px solid color-mix(in srgb, var(--tarot-theme, #8898b8) 65%, transparent);
   border-radius: 8px;
   pointer-events: none;
 }
 
-.tarot-art-svg {
-  width: 70%;
-  height: auto;
+.tarot-card-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tarot-theme, #e8ecf4) 22%, transparent);
+}
+
+.tarot-card-icon {
+  width: clamp(3rem, 12vw, 4.5rem);
+  height: clamp(3rem, 12vw, 4.5rem);
+  color: color-mix(in srgb, var(--tarot-theme, #5a6278) 72%, #444);
+}
+
+.tarot-card-icon svg {
+  stroke-width: 1;
 }
 
 .tarot-card-name {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  margin-top: 1.25rem;
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.12em;
   text-align: center;
-  color: #4a5068;
+  color: #444;
+}
+
+.tarot-card-subname {
+  margin-top: 0.35rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: color-mix(in srgb, var(--tarot-theme, #8898b8) 55%, #9a9a9a);
 }
 
 .tarot-card-placeholder {
@@ -477,7 +576,7 @@
 }
 
 .tarot-reading {
-  max-width: 28rem;
+  max-width: 32rem;
   text-align: center;
 }
 
@@ -486,13 +585,47 @@
   font-size: clamp(1.25rem, 3vw, 1.6rem);
   font-weight: 500;
   color: #444;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tarot-reading-subtitle {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--tarot-theme, #8898b8) 60%, #9a9a9a);
+}
+
+.tarot-reading-block {
+  text-align: left;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--tarot-theme, #8898b8) 20%, transparent);
+}
+
+.tarot-reading-block:last-child {
+  margin-bottom: 0;
+}
+
+.tarot-reading-label {
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #575757;
 }
 
 .tarot-reading-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.85;
   color: #6b6b6b;
+  margin: 0;
 }
 
 /* ── 星球 Grid（桌機三欄 / 手機垂直）── */
@@ -528,24 +661,57 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: clamp(1.5rem, 3vw, 2rem);
+  padding: 36px 12px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 8px 32px rgba(100, 140, 180, 0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* 蛋白質 · 冰晶星球 */
+.island-card-ice {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(129, 167, 229, 0.22) 100%
+  );
+  box-shadow: 0 8px 32px rgba(100, 160, 255, 0.12);
+}
+
+.island-card-ice:hover {
+  box-shadow: 0 16px 48px rgba(100, 160, 255, 0.18);
+}
+
+/* 碳水 · 氣態星球 */
+.island-card-gas {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(251, 171, 114, 0.2) 100%
+  );
+  box-shadow: 0 8px 32px rgba(255, 160, 90, 0.12);
+}
+
+.island-card-gas:hover {
+  box-shadow: 0 16px 48px rgba(255, 160, 90, 0.18);
+}
+
+/* 纖維 · 類地星球 */
+.island-card-terran {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(181, 168, 245, 0.2) 100%
+  );
+  box-shadow: 0 8px 32px rgba(160, 140, 255, 0.1);
+}
+
+.island-card-terran:hover {
+  box-shadow: 0 16px 48px rgba(160, 140, 255, 0.16);
 }
 
 .island-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(100, 140, 180, 0.14);
-}
-
-.island-card-visual .mini-planet-canvas {
-  width: clamp(100px, 12vw, 140px);
-  height: clamp(100px, 12vw, 140px);
 }
 
 .island-card-content {
@@ -678,8 +844,8 @@
   }
 
   .hero-planet .mini-planet-canvas {
-    width: clamp(80px, 22vw, 110px);
-    height: clamp(80px, 22vw, 110px);
+    width: clamp(60px, 22vw, 110px);
+    height: clamp(60px, 22vw, 110px);
   }
 
   .analyze-grid {

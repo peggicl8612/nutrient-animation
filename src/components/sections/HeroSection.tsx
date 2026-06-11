@@ -66,7 +66,7 @@ export function HeroSection() {
             <p className="hero-eyebrow">Nutrient Landscape</p>
             <h1 className="hero-title">營養食刻</h1>
             <p className="hero-lead">
-              三顆星球映照你的巨量與微量營養。
+              三顆星球映照你的巨量與微量營養<br/>
               向下捲動，光影將穿透星體。
             </p>
           </div>

@@ -9,10 +9,13 @@ import type { ManualNutritionInput } from '../../types/ui';
 import { pickTarotCard } from '../../data/mockTarotCards';
 import { MEAL_COLORS } from '../../types/ui';
 import { ImageUploadZone } from '../panel/ImageUploadZone';
+import { NutritionTargetForm } from '../panel/NutritionTargetForm';
 import { MealTypeSelector } from '../panel/MealTypeSelector';
 import { ManualInputForm } from '../panel/ManualInputForm';
 import { AnalyzeLoading } from '../panel/AnalyzeLoading';
 import { NutritionFactsCard } from '../panel/NutritionFactsCard';
+import { useNutrientAI } from '../../hooks/useNutrientAI';
+import { mapAiToNutritionData } from '../../utils/mapAiToNutritionData';
 
 export function AnalyzeSection() {
   const ref = useRef<HTMLElement>(null);
@@ -30,31 +33,44 @@ export function AnalyzeSection() {
   const resetAnalysis = useUIStore((s) => s.resetAnalysis);
   const selectedMeal = useUIStore((s) => s.selectedMeal);
   const setDrawnTarotCard = useUIStore((s) => s.setDrawnTarotCard);
-  const imageMealName = useUIStore((s) => s.imageMealName);
   const setData = useNutritionStore((s) => s.setData);
   const mealToken = MEAL_COLORS[selectedMeal];
 
+  const { errorMessage, uploadAndAnalyze, setErrorMessage } = useNutrientAI();
+
   const [mode, setMode] = useState<'image' | 'manual'>('image');
   const [manualInput, setManualInput] = useState<ManualNutritionInput>(DEFAULT_MANUAL_INPUT);
+  const [hasImage, setHasImage] = useState(false);
   const selectedFileRef = useRef<File | null>(null);
 
   const handleAnalyze = async () => {
     if (isAnalyzing) return;
+    setErrorMessage('');
     setAnalyzing(true);
     setAnalyzeProgress(0);
+
     try {
-      const result = await nutritionProvider.simulateAnalysis(
-        mode === 'image'
-          ? {
-              file: selectedFileRef.current ?? undefined,
-              mealName: imageMealName.trim() || undefined,
-              mealType: selectedMeal,
-            }
-          : { manual: manualInput, mealType: selectedMeal },
-        setAnalyzeProgress
-      );
-      setData(result);
-      setDrawnTarotCard(pickTarotCard(result));
+      if (mode === 'image') {
+        const file = selectedFileRef.current;
+        if (!file) {
+          setErrorMessage('請先上傳食物照片');
+          return;
+        }
+
+        const aiResult = await uploadAndAnalyze(file, setAnalyzeProgress);
+        const result = mapAiToNutritionData(aiResult, manualInput);
+        setData(result);
+        setDrawnTarotCard(pickTarotCard(result));
+      } else {
+        const result = await nutritionProvider.simulateAnalysis(
+          { manual: manualInput, mealType: selectedMeal },
+          setAnalyzeProgress,
+        );
+        setData(result);
+        setDrawnTarotCard(pickTarotCard(result));
+      }
+    } catch {
+      // errorMessage 已由 useNutrientAI 設定
     } finally {
       resetAnalysis();
     }
@@ -74,7 +90,7 @@ export function AnalyzeSection() {
           <span className="section-index">01</span>
           <h2 className="section-title">影像辨識 · 營養分析</h2>
           <p className="section-desc">
-            上傳食物照片進行 AI 模擬辨識，或手動輸入每項營養素的攝取與每日目標。
+            上傳食物照片進行 AI 影像辨識並設定每日目標，或手動輸入每項營養素的攝取與目標。
             系統將計算熱量、巨量營養素佔比與血糖穩定指數，並連動三座星球生態。
           </p>
         </motion.header>
@@ -121,10 +137,20 @@ export function AnalyzeSection() {
 
             <div className="analyze-panel-body">
               {mode === 'image' ? (
-                <ImageUploadZone
-                  disabled={isAnalyzing}
-                  onFileSelect={(file) => { selectedFileRef.current = file; }}
-                />
+                <>
+                  <ImageUploadZone
+                    disabled={isAnalyzing}
+                    onFileSelect={(file) => {
+                      selectedFileRef.current = file;
+                      setHasImage(file !== null);
+                    }}
+                  />
+                  <NutritionTargetForm
+                    values={manualInput}
+                    disabled={isAnalyzing}
+                    onChange={setManualInput}
+                  />
+                </>
               ) : (
                 <ManualInputForm
                   values={manualInput}
@@ -135,10 +161,14 @@ export function AnalyzeSection() {
 
               <AnalyzeLoading />
 
+              {errorMessage && (
+                <p className="analyze-error" role="alert">{errorMessage}</p>
+              )}
+
               <button
                 type="button"
                 className="control-panel-submit control-panel-submit-meal"
-                disabled={isAnalyzing}
+                disabled={isAnalyzing || (mode === 'image' && !hasImage)}
                 onClick={handleAnalyze}
               >
                 <Sparkles size={16} />

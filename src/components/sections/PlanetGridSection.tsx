@@ -15,7 +15,7 @@ export function PlanetGridSection({ islands }: Props) {
             <span className="section-index">03</span>
             <h2 className="section-title">三座星球 · 營養生態</h2>
             <p className="section-desc">
-              蛋白質、碳水與纖維的攝取狀態，即時映照在三顆星球的紋理與光澤之上。
+              蛋白質、碳水與纖維的攝取狀態<br />即時映照在三顆星球的紋理與光澤之上。
             </p>
           </header>
 

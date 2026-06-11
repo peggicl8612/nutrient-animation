@@ -12,8 +12,6 @@ export function ImageUploadZone({ disabled, onFileSelect }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const previewImage = useUIStore((s) => s.previewImage);
   const setPreviewImage = useUIStore((s) => s.setPreviewImage);
-  const imageMealName = useUIStore((s) => s.imageMealName);
-  const setImageMealName = useUIStore((s) => s.setImageMealName);
   const selectedMeal = useUIStore((s) => s.selectedMeal);
   const mealToken = MEAL_COLORS[selectedMeal];
 
@@ -33,17 +31,6 @@ export function ImageUploadZone({ disabled, onFileSelect }: Props) {
 
   return (
     <div className="upload-zone">
-      <label className="manual-meal-name upload-meal-name">
-        <span>餐點名稱</span>
-        <input
-          type="text"
-          placeholder="例：蔬菜沙拉、雞腿便當"
-          disabled={disabled}
-          value={imageMealName}
-          onChange={(e) => setImageMealName(e.target.value)}
-        />
-      </label>
-
       <input
         ref={inputRef}
         type="file"
@@ -75,7 +62,7 @@ export function ImageUploadZone({ disabled, onFileSelect }: Props) {
         >
           <ImagePlus size={20} />
           <span>上傳食物照片</span>
-         {/*  <small>餐點名稱或檔名含 沙拉 / 便當 / 蛋糕 會對應不同 Mock 結果</small> */}
+          <small>AI 將自動辨識餐點名稱與營養成分</small>
         </button>
       )}
     </div>

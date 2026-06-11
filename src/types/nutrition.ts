@@ -1,4 +1,5 @@
-export type NutritionSource = 'initial' | 'manual' | 'ai-mock';
+export type NutritionSource = 'initial' | 'manual' | 'ai-mock' | 'ai';
+
 
 export interface MacroNutrient {
   intake: number;
@@ -17,3 +18,4 @@ export interface NutritionData {
   updatedAt: string;
   source: NutritionSource;
 }
+

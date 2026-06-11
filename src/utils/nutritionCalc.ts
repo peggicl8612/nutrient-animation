@@ -17,11 +17,11 @@ export function estimateCalories(protein: number, carbs: number, fat: number, fi
 export function bloodSugarStabilityFromCarbs(intake: number, target: number, sugar: number) {
   const ratio = target > 0 ? intake / target : 1;
   const sugarPenalty = sugar > 25 ? 0.15 : sugar > 15 ? 0.08 : 0;
-  let base = 0.7;
-  if (ratio <= 0.85) base = 0.92;
-  else if (ratio <= 1.0) base = 0.78;
-  else if (ratio <= 1.2) base = 0.55;
-  else base = 0.35;
+  const base =
+    ratio <= 0.85 ? 0.92 :
+    ratio <= 1.0 ? 0.78 :
+    ratio <= 1.2 ? 0.55 :
+    0.35;
   return clamp01(base - sugarPenalty);
 }
 

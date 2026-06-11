@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { motion, type MotionValue } from 'framer-motion';
-import { MiniPlanetCanvas } from '../scene/MiniPlanetCanvas.tsx';
+import { HeroPlanetVisual } from '../planets/HeroPlanetVisual.tsx';
+import type { PlanetVariant } from '../planets/Planet.tsx';
 
 const PLANETS = [
-  { variant: 'ice' as const, metric: 0.85, label: '蛋白質' },
-  { variant: 'gas' as const, metric: 0.7, label: '碳水' },
-  { variant: 'terran' as const, metric: 0.72, label: '纖維' },
+  { variant: 'ice' as const, label: '蛋白質' },
+  { variant: 'gas' as const, label: '碳水' },
+  { variant: 'terran' as const, label: '纖維' },
 ];
 
 interface Props {
@@ -13,6 +15,8 @@ interface Props {
 }
 
 export function HeroThreePlanets({ scale, glowIntensity }: Props) {
+  const [hoveredVariant, setHoveredVariant] = useState<PlanetVariant | null>(null);
+
   return (
     <motion.div
       className="hero-planets"
@@ -25,16 +29,13 @@ export function HeroThreePlanets({ scale, glowIntensity }: Props) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+          onMouseEnter={() => setHoveredVariant(planet.variant)}
+          onMouseLeave={() => setHoveredVariant(null)}
         >
-          <motion.div
-            className="hero-planet-glow"
-            aria-hidden
-            style={glowIntensity ? { opacity: glowIntensity } : undefined}
-          />
-          <MiniPlanetCanvas
+          <HeroPlanetVisual
             variant={planet.variant}
-            metric={planet.metric}
-            hovered={false}
+            hovered={hoveredVariant === planet.variant}
+            glowOpacity={glowIntensity}
           />
           <span className="hero-planet-label">{planet.label}</span>
         </motion.div>

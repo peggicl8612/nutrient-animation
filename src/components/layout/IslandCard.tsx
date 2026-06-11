@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { MiniPlanetCanvas } from '../scene/MiniPlanetCanvas.tsx';
+import { HeroPlanetVisual } from '../planets/HeroPlanetVisual.tsx';
 import type { PlanetVariant } from '../planets/Planet.tsx';
 import { AnimatedGramsPair, AnimatedNumber } from '../ui/AnimatedNumber.tsx';
 
@@ -79,20 +78,10 @@ function MetricDetail({ data }: { data: IslandCardData }) {
 }
 
 export function IslandCard({ data }: Props) {
-  const [hovered, setHovered] = useState(false);
-
   return (
-    <article
-      className="island-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <article className={`island-card island-card-${data.variant}`}>
       <div className="island-card-visual">
-        <MiniPlanetCanvas
-          variant={data.variant}
-          metric={data.metric}
-          hovered={hovered}
-        />
+        <HeroPlanetVisual variant={data.variant} />
       </div>
 
       <div className="island-card-content">

@@ -1,13 +1,13 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { MiniPlanetCanvas } from '../scene/MiniPlanetCanvas.tsx';
+import { HeroPlanetVisual } from '../planets/HeroPlanetVisual.tsx';
 import type { IslandCardData } from '../layout/IslandCard.tsx';
 import { AnimatedGramsPair, AnimatedNumber } from '../ui/AnimatedNumber.tsx';
 
 const SECTION_TINT: Record<string, string> = {
-  protein: 'rgba(140, 190, 235, 0.12)',
-  nebula: 'rgba(235, 170, 120, 0.14)',
-  oasis: 'rgba(160, 150, 220, 0.14)',
+  protein: 'rgba(140, 190, 235, 0.08)',
+  nebula: 'rgba(235, 170, 120, 0.06)',
+  oasis: 'rgba(160, 150, 220, 0.06)',
 };
 
 interface Props {
@@ -17,7 +17,6 @@ interface Props {
 
 export function IslandScrollSection({ data, sectionIndex }: Props) {
   const ref = useRef<HTMLElement>(null);
-  const [hovered, setHovered] = useState(false);
   const isInView = useInView(ref, { once: true, margin: '-20%' });
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -33,8 +32,6 @@ export function IslandScrollSection({ data, sectionIndex }: Props) {
       ref={ref}
       className={`section section-island section-island-${data.id}`}
       aria-label={data.title}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <div className="section-island-tint" style={{ backgroundColor: tint }} />
 
@@ -46,11 +43,7 @@ export function IslandScrollSection({ data, sectionIndex }: Props) {
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
-          <MiniPlanetCanvas
-            variant={data.variant}
-            metric={data.metric}
-            hovered={hovered}
-          />
+          <HeroPlanetVisual variant={data.variant} />
         </motion.div>
 
         <motion.div

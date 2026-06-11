@@ -21,18 +21,103 @@ body {
   min-height: 100vh;
 }
 
+/* ── 背景音樂切換按鈕 ── */
+.music-toggle {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 32px;
+  opacity: 0.5;
+  height: 32px;
+  justify-content: center;
+  border: 1px solid rgba(175, 170, 170, 0.4);
+  border-radius: 50%;
+  background: rgba(250, 250, 247, 0.85);
+  backdrop-filter: blur(8px);
+  color: #6b6b6b;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.music-toggle:hover {
+  color: #ddd;
+  border-color: rgba(17, 17, 17, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(17, 17, 17, 0.08);
+}
+
+.music-toggle.is-playing {
+  color: #3a4a6b;
+  border-color: rgba(58, 74, 107, 0.35);
+}
+
+.music-toggle-waves {
+  position: absolute;
+  top: -0.35rem;
+  right: -0.2rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.7rem;
+}
+
+.music-toggle-waves i {
+  width: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  animation: music-wave 1.2s ease-in-out infinite;
+}
+
+.music-toggle-waves i:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.music-toggle-waves i:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes music-wave {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
 /* ── 迷你星球 Canvas 共用 ── */
 .mini-planet-canvas {
-  border-radius: 50%;
-  overflow: hidden;
-  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.7), transparent 70%);
+  overflow: visible;
+  background: transparent;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.5s ease;
+}
+
+.mini-planet-canvas > div {
+  background: transparent !important;
+}
+
+.planet-visual::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .mini-planet-canvas canvas {
   width: 100% !important;
   height: 100% !important;
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
 }
 
 /* ── 島嶼數據指標 ── */
@@ -44,6 +129,10 @@ body {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(17, 17, 17, 0.08);
+
+  @media(max-width: 720px) {
+    justify-content: center;
+  }
 }
 
 .island-card-metric-label {
@@ -61,9 +150,10 @@ body {
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
+  color: #575757;
 }
 
 .island-card-metric-detail {
   font-size: 0.875rem;
-  color: #6b6b6b;
+  color: #9a9a9a;
 }
