@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from 'react';
+import { useRef, useState, type CSSProperties, type DragEvent } from 'react';
 import { ImagePlus, X } from 'lucide-react';
 import { useUIStore } from '../../stores/useUIStore';
 import { MEAL_COLORS } from '../../types/ui';
@@ -10,6 +10,8 @@ interface Props {
 
 export function ImageUploadZone({ disabled, onFileSelect }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const dragCounter = useRef(0);
+  const [isDragging, setIsDragging] = useState(false);
   const previewImage = useUIStore((s) => s.previewImage);
   const setPreviewImage = useUIStore((s) => s.setPreviewImage);
   const selectedMeal = useUIStore((s) => s.selectedMeal);
@@ -29,8 +31,41 @@ export function ImageUploadZone({ disabled, onFileSelect }: Props) {
     if (inputRef.current) inputRef.current.value = '';
   };
 
+  const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (disabled) return;
+    dragCounter.current += 1;
+    if (e.dataTransfer.types.includes('Files')) setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (disabled) return;
+    dragCounter.current -= 1;
+    if (dragCounter.current === 0) setIsDragging(false);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (!disabled) e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    dragCounter.current = 0;
+    setIsDragging(false);
+    if (disabled) return;
+    handleFile(e.dataTransfer.files?.[0]);
+  };
+
   return (
-    <div className="upload-zone">
+    <div
+      className={isDragging ? 'upload-zone upload-zone-dragging' : 'upload-zone'}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       <input
         ref={inputRef}
         type="file"
@@ -61,8 +96,8 @@ export function ImageUploadZone({ disabled, onFileSelect }: Props) {
           onClick={() => inputRef.current?.click()}
         >
           <ImagePlus size={20} />
-          <span>上傳食物照片</span>
-          <small>AI 將自動辨識餐點名稱與營養成分</small>
+          <span>{isDragging ? '放開以上傳照片' : '上傳食物照片'}</span>
+          <small>拖曳或點擊上傳 · AI 將自動辨識餐點名稱與營養成分</small>
         </button>
       )}
     </div>

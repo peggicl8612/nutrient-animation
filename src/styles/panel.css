@@ -139,6 +139,13 @@
   gap: 0.85rem;
 }
 
+.upload-zone-dragging .upload-zone-placeholder,
+.upload-zone-dragging .upload-zone-preview {
+  border-color: color-mix(in srgb, var(--meal-color, #888) 80%, #888);
+  background: color-mix(in srgb, var(--meal-color, #ccc) 8%, rgba(255, 255, 255, 0.55));
+  box-shadow: inset 0 0 32px var(--meal-glow, transparent), 0 0 16px var(--meal-glow, transparent);
+}
+
 .upload-meal-name {
   flex-shrink: 0;
 }

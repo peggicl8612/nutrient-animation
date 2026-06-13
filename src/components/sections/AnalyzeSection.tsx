@@ -123,7 +123,7 @@ export function AnalyzeSection() {
               <button
                 type="button"
                 className={mode === 'image' ? 'panel-tab panel-tab-active' : 'panel-tab'}
-                disabled={isAnalyzing || !isFirebaseConfigured}
+                disabled={isAnalyzing}
                 title={isFirebaseConfigured ? undefined : '線上版尚未設定 Firebase'}
                 onClick={() => setMode('image')}
               >
